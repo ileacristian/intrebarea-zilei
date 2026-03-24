@@ -23,42 +23,50 @@ type Comment = {
 const INITIAL_COMMENTS: Comment[] = [
   {
     id: 1,
-    author: 'Maria D.',
-    text: 'Eu am zis "Destul de bine" dar sincer e mai mult "cu dificultate" 😅',
-    timeAgo: '2h',
-    likes: 14,
+    author: 'Andrei M.',
+    text: 'Da, ar trebui! Pe A1 am văzut oameni mergând cu 40 km/h pe banda 1 și blocau tot traficul. E periculos.',
+    timeAgo: '3h',
+    likes: 34,
     likedByMe: false,
   },
   {
     id: 2,
-    author: 'Alex P.',
-    text: 'Aceeași situație, mai ales de când lucrez de acasă. Nicio limită clară.',
+    author: 'Elena R.',
+    text: 'Nu sunt de acord cu o limită minimă. Ce faci cu șoferii începători sau cu cei care au frică? Îi amendezi că merg prea încet?',
     timeAgo: '2h',
-    likes: 9,
+    likes: 18,
     likedByMe: false,
   },
   {
     id: 3,
-    author: 'Ioana M.',
-    text: 'Îmi închid laptopul la 18:00 fix, altfel nu mai opresc 🙈',
-    timeAgo: '1h',
-    likes: 22,
+    author: 'Mihai C.',
+    text: 'În Germania există și funcționează perfect. 80 km/h minim pe autostradă e rezonabil.',
+    timeAgo: '2h',
+    likes: 27,
     likedByMe: true,
   },
   {
     id: 4,
-    author: 'Bogdan R.',
-    text: 'Ar trebui o lege pentru asta în România, ca în Franța.',
-    timeAgo: '45min',
-    likes: 7,
+    author: 'Ioana T.',
+    text: 'Problema e că la noi nu se respectă nici limitele maxime, darămite cele minime 😅',
+    timeAgo: '1h',
+    likes: 41,
     likedByMe: false,
   },
   {
     id: 5,
-    author: 'Cristina V.',
-    text: 'Weekendurile sunt sacre la mine. Telefon pe silent, nicio urgență.',
-    timeAgo: '30min',
-    likes: 31,
+    author: 'Radu P.',
+    text: 'Dacă cineva merge cu 50 pe autostradă e mult mai periculos decât unul care depășește viteza. Deci da, limită minimă!',
+    timeAgo: '45min',
+    likes: 22,
+    likedByMe: false,
+  },
+  {
+    id: 6,
+    author: 'Alina S.',
+    text: 'Nu toate autostărzile sunt la fel. Pe unele porțiuni cu lucrări sau curbe periculoase nu poți impune un minim ridicat.',
+    timeAgo: '20min',
+    likes: 9,
     likedByMe: false,
   },
 ];
@@ -98,7 +106,7 @@ export default function CommentsScreen() {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Comentarii</Text>
-        <Text style={styles.headerSub}>{comments.length} comentarii la întrebarea de azi</Text>
+        <Text style={styles.headerSub}>{comments.length} comentarii • Limită minimă pe autostradă?</Text>
       </View>
 
       <KeyboardAvoidingView

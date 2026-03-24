@@ -7,6 +7,7 @@ import {
   ScrollView,
   SafeAreaView,
 } from 'react-native';
+import { useRouter } from 'expo-router';
 
 const QUESTION = {
   type: 'ab-battle' as const,
@@ -18,6 +19,7 @@ const QUESTION = {
 };
 
 export default function TodayScreen() {
+  const router = useRouter();
   const [selectedSide, setSelectedSide] = useState<'A' | 'B' | null>(null);
   const [hasVoted, setHasVoted] = useState(false);
   const [rating, setRating] = useState(0);
@@ -98,6 +100,16 @@ export default function TodayScreen() {
           </View>
 
           <Text style={styles.voteCount}>{totalVotes.toLocaleString('ro-RO')} voturi</Text>
+
+          {hasVoted && (
+            <TouchableOpacity
+              style={styles.discussionBtn}
+              onPress={() => router.push('/(tabs)/comments')}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.discussionBtnText}>💬  Vezi discuția  ›</Text>
+            </TouchableOpacity>
+          )}
         </View>
 
         {/* Rating card */}
@@ -240,6 +252,14 @@ const styles = StyleSheet.create({
   splitBarB: { backgroundColor: CORAL },
 
   voteCount: { fontSize: 13, color: '#BDBDBD', textAlign: 'center' },
+  discussionBtn: {
+    marginTop: 10,
+    backgroundColor: '#212121',
+    borderRadius: 14,
+    paddingVertical: 14,
+    alignItems: 'center',
+  },
+  discussionBtnText: { color: '#fff', fontSize: 15, fontWeight: '700' },
 
   // Rating
   ratingLabel: { fontSize: 15, fontWeight: '600', color: '#424242', marginBottom: 12 },
