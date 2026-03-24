@@ -25,20 +25,20 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="istoric"
+        name="history"
         options={{
-          title: 'Istoric',
+          title: 'History',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="time-outline" size={size} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="chat"
+        name="comments"
         options={{
-          title: 'Chat',
+          title: 'Comments',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="chatbubbles-outline" size={size} color={color} />
+            <Ionicons name="chatbubble-ellipses-outline" size={size} color={color} />
           ),
         }}
       />

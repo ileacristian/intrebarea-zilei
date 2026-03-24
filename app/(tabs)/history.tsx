@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
 
-const HISTORY = [
+const PAST_ANSWERS = [
   {
     id: 1,
     date: '23 martie 2026',
@@ -31,16 +31,16 @@ const HISTORY = [
   },
 ];
 
-export default function IstoricScreen() {
+export default function HistoryScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scroll}>
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Istoricul tău</Text>
-          <Text style={styles.headerSub}>{HISTORY.length} întrebări la care ai răspuns</Text>
+          <Text style={styles.headerSub}>{PAST_ANSWERS.length} întrebări la care ai răspuns</Text>
         </View>
 
-        {HISTORY.map((item) => (
+        {PAST_ANSWERS.map((item) => (
           <View key={item.id} style={styles.card}>
             <Text style={styles.date}>{item.date}</Text>
             <Text style={styles.question}>{item.question}</Text>
@@ -50,7 +50,7 @@ export default function IstoricScreen() {
               </View>
               <Text style={styles.answer}>{item.userAnswer}</Text>
             </View>
-            <Text style={styles.votes}>{item.totalVotes.toLocaleString('ro-RO')} voturi totale</Text>
+            <Text style={styles.voteCount}>{item.totalVotes.toLocaleString('ro-RO')} voturi totale</Text>
           </View>
         ))}
       </ScrollView>
@@ -97,5 +97,5 @@ const styles = StyleSheet.create({
   },
   answerBadgeText: { fontSize: 11, fontWeight: '600', color: '#1a73e8' },
   answer: { fontSize: 14, color: '#424242', flex: 1 },
-  votes: { fontSize: 12, color: '#BDBDBD' },
+  voteCount: { fontSize: 12, color: '#BDBDBD' },
 });

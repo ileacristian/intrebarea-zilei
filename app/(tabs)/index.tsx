@@ -20,7 +20,7 @@ const QUESTION = {
   ],
 };
 
-export default function AziScreen() {
+export default function TodayScreen() {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [hasVoted, setHasVoted] = useState(false);
   const [rating, setRating] = useState(0);
