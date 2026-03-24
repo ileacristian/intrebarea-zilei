@@ -11,10 +11,10 @@ import {
 const QUESTION = {
   type: 'ab-battle' as const,
   date: '24 martie 2026',
-  text: 'Would you rather travel to space or explore the deepest ocean?',
+  text: 'Ar trebui să existe o limită minimă de viteză pe autostradă sau nu?',
   totalVotes: 1102,
-  sideA: { label: 'Space', votes: 641 },
-  sideB: { label: 'Ocean', votes: 461 },
+  sideA: { label: 'Da', votes: 641 },
+  sideB: { label: 'Nu', votes: 461 },
 };
 
 export default function TodayScreen() {
