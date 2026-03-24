@@ -1,0 +1,19 @@
+{
+  "expo": {
+    "name": "Întrebarea Zilei",
+    "slug": "intrebarea-zilei",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "intrebarea-zilei",
+    "userInterfaceStyle": "light",
+    "platforms": ["ios", "android", "web"],
+    "web": {
+      "bundler": "metro",
+      "output": "static"
+    },
+    "experiments": {
+      "typedRoutes": true,
+      "baseUrl": "/intrebarea-zilei"
+    }
+  }
+}
