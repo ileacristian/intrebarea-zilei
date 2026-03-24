@@ -9,29 +9,30 @@ import {
 } from 'react-native';
 
 const QUESTION = {
+  type: 'ab-battle' as const,
   date: '24 martie 2026',
-  text: 'Cum te descurci cu echilibrul dintre viața profesională și cea personală?',
-  totalVotes: 1247,
-  options: [
-    { id: 1, label: 'Foarte bine', votes: 312 },
-    { id: 2, label: 'Destul de bine', votes: 489 },
-    { id: 3, label: 'Cu dificultate', votes: 298 },
-    { id: 4, label: 'Deloc bine', votes: 148 },
-  ],
+  text: 'Would you rather travel to space or explore the deepest ocean?',
+  totalVotes: 1102,
+  sideA: { label: 'Space', votes: 641 },
+  sideB: { label: 'Ocean', votes: 461 },
 };
 
 export default function TodayScreen() {
-  const [selectedOption, setSelectedOption] = useState<number | null>(null);
+  const [selectedSide, setSelectedSide] = useState<'A' | 'B' | null>(null);
   const [hasVoted, setHasVoted] = useState(false);
   const [rating, setRating] = useState(0);
 
-  const handleVote = (optionId: number) => {
+  const handleVote = (side: 'A' | 'B') => {
     if (hasVoted) return;
-    setSelectedOption(optionId);
+    setSelectedSide(side);
     setHasVoted(true);
   };
 
   const totalVotes = hasVoted ? QUESTION.totalVotes + 1 : QUESTION.totalVotes;
+  const votesA = selectedSide === 'A' ? QUESTION.sideA.votes + 1 : QUESTION.sideA.votes;
+  const votesB = selectedSide === 'B' ? QUESTION.sideB.votes + 1 : QUESTION.sideB.votes;
+  const pctA = Math.round((votesA / totalVotes) * 100);
+  const pctB = 100 - pctA;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -44,49 +45,62 @@ export default function TodayScreen() {
         <View style={styles.card}>
           <Text style={styles.question}>{QUESTION.text}</Text>
 
-          <View style={styles.options}>
-            {QUESTION.options.map((option) => {
-              const votes = option.id === selectedOption ? option.votes + 1 : option.votes;
-              const pct = Math.round((votes / totalVotes) * 100);
-              const isSelected = selectedOption === option.id;
+          {/* A/B Battle sides */}
+          <View style={styles.abRow}>
+            {/* Side A */}
+            <TouchableOpacity
+              style={[
+                styles.abSide,
+                styles.abSideA,
+                selectedSide === 'A' && styles.abSideASelected,
+              ]}
+              onPress={() => handleVote('A')}
+              activeOpacity={hasVoted ? 1 : 0.75}
+            >
+              <Text style={styles.abSideLabel}>SIDE A</Text>
+              {hasVoted && (
+                <Text style={[styles.abPct, styles.abPctA]}>{pctA}%</Text>
+              )}
+              <View style={[styles.abPill, styles.abPillA, selectedSide === 'A' && styles.abPillASelected]}>
+                <Text style={[styles.abPillText, styles.abPillTextA]}>{QUESTION.sideA.label}</Text>
+              </View>
+            </TouchableOpacity>
 
-              return (
-                <TouchableOpacity
-                  key={option.id}
-                  style={[
-                    styles.option,
-                    isSelected && styles.optionSelected,
-                  ]}
-                  onPress={() => handleVote(option.id)}
-                  activeOpacity={hasVoted ? 1 : 0.7}
-                >
-                  {hasVoted && (
-                    <View
-                      style={[
-                        styles.progressBar,
-                        { width: `${pct}%` as any },
-                        isSelected && styles.progressSelected,
-                      ]}
-                    />
-                  )}
-                  <View style={styles.optionContent}>
-                    <Text style={[styles.optionLabel, isSelected && styles.optionLabelSelected]}>
-                      {option.label}
-                    </Text>
-                    {hasVoted && (
-                      <Text style={[styles.optionPct, isSelected && styles.optionLabelSelected]}>
-                        {pct}%
-                      </Text>
-                    )}
-                  </View>
-                </TouchableOpacity>
-              );
-            })}
+            {/* VS divider */}
+            <View style={styles.vsDivider}>
+              <Text style={styles.vsText}>VS</Text>
+            </View>
+
+            {/* Side B */}
+            <TouchableOpacity
+              style={[
+                styles.abSide,
+                styles.abSideB,
+                selectedSide === 'B' && styles.abSideBSelected,
+              ]}
+              onPress={() => handleVote('B')}
+              activeOpacity={hasVoted ? 1 : 0.75}
+            >
+              <Text style={styles.abSideLabel}>SIDE B</Text>
+              {hasVoted && (
+                <Text style={[styles.abPct, styles.abPctB]}>{pctB}%</Text>
+              )}
+              <View style={[styles.abPill, styles.abPillB, selectedSide === 'B' && styles.abPillBSelected]}>
+                <Text style={[styles.abPillText, styles.abPillTextB]}>{QUESTION.sideB.label}</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+
+          {/* Split progress bar */}
+          <View style={styles.splitBar}>
+            <View style={[styles.splitBarA, { flex: hasVoted ? pctA : 50 }]} />
+            <View style={[styles.splitBarB, { flex: hasVoted ? pctB : 50 }]} />
           </View>
 
           <Text style={styles.voteCount}>{totalVotes.toLocaleString('ro-RO')} voturi</Text>
         </View>
 
+        {/* Rating card */}
         <View style={styles.card}>
           <Text style={styles.ratingLabel}>Cum ți s-a părut întrebarea?</Text>
           <View style={styles.stars}>
@@ -102,6 +116,13 @@ export default function TodayScreen() {
     </SafeAreaView>
   );
 }
+
+const TEAL = '#4DB6AC';
+const TEAL_LIGHT = '#E8F5F3';
+const TEAL_MID = '#B2DFDB';
+const CORAL = '#E57373';
+const CORAL_LIGHT = '#FDECEA';
+const CORAL_MID = '#FFCDD2';
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#F5F5F5' },
@@ -126,43 +147,101 @@ const styles = StyleSheet.create({
   },
   question: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: '700',
     color: '#212121',
     lineHeight: 26,
     marginBottom: 20,
   },
-  options: { gap: 10 },
-  option: {
+
+  // A/B Battle layout
+  abRow: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    gap: 0,
+    marginBottom: 14,
+  },
+  abSide: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: 20,
+    paddingHorizontal: 12,
     borderRadius: 12,
-    borderWidth: 1.5,
-    borderColor: '#E0E0E0',
-    overflow: 'hidden',
-    position: 'relative',
-    minHeight: 50,
+    borderWidth: 2,
+  },
+  abSideA: {
+    backgroundColor: TEAL_LIGHT,
+    borderColor: TEAL_LIGHT,
+    marginRight: 8,
+  },
+  abSideASelected: {
+    borderColor: TEAL,
+    backgroundColor: '#D4EFEC',
+  },
+  abSideB: {
+    backgroundColor: CORAL_LIGHT,
+    borderColor: CORAL_LIGHT,
+    marginLeft: 8,
+  },
+  abSideBSelected: {
+    borderColor: CORAL,
+    backgroundColor: '#FADADD',
+  },
+  abSideLabel: {
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 1,
+    color: '#9E9E9E',
+    marginBottom: 6,
+    textTransform: 'uppercase',
+  },
+  abPct: {
+    fontSize: 36,
+    fontWeight: '800',
+    marginBottom: 10,
+    lineHeight: 40,
+  },
+  abPctA: { color: TEAL },
+  abPctB: { color: CORAL },
+  abPill: {
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+  },
+  abPillA: { backgroundColor: '#C8E6E3' },
+  abPillASelected: { backgroundColor: TEAL_MID },
+  abPillB: { backgroundColor: '#F9C8C8' },
+  abPillBSelected: { backgroundColor: CORAL_MID },
+  abPillText: { fontSize: 14, fontWeight: '600' },
+  abPillTextA: { color: '#2E7D74' },
+  abPillTextB: { color: '#B94040' },
+
+  // VS divider
+  vsDivider: {
+    width: 32,
+    alignItems: 'center',
     justifyContent: 'center',
   },
-  optionSelected: { borderColor: '#1a73e8' },
-  progressBar: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    backgroundColor: '#EEF3FD',
-    borderRadius: 10,
+  vsText: {
+    fontSize: 13,
+    fontWeight: '800',
+    color: '#BDBDBD',
+    letterSpacing: 1,
   },
-  progressSelected: { backgroundColor: '#D2E3FC' },
-  optionContent: {
+
+  // Split progress bar
+  splitBar: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 13,
-    zIndex: 1,
+    height: 8,
+    borderRadius: 6,
+    overflow: 'hidden',
+    marginBottom: 12,
   },
-  optionLabel: { fontSize: 15, color: '#424242', fontWeight: '500' },
-  optionLabelSelected: { color: '#1a73e8', fontWeight: '600' },
-  optionPct: { fontSize: 14, color: '#757575', fontWeight: '600' },
-  voteCount: { marginTop: 12, fontSize: 13, color: '#BDBDBD', textAlign: 'center' },
+  splitBarA: { backgroundColor: TEAL },
+  splitBarB: { backgroundColor: CORAL },
+
+  voteCount: { fontSize: 13, color: '#BDBDBD', textAlign: 'center' },
+
+  // Rating
   ratingLabel: { fontSize: 15, fontWeight: '600', color: '#424242', marginBottom: 12 },
   stars: { flexDirection: 'row', gap: 8 },
   star: { fontSize: 32, color: '#E0E0E0' },
